@@ -1,0 +1,16 @@
+<div>
+    <div class="flex items-center justify-center" >
+        <app-navbar (searched)="getSearchTerm($event)" ></app-navbar>
+
+        <app-button [label]="'Cerca'"
+                    [size]="'medium'"
+                    [type]="'button'"
+                    [variant]="'search'"
+                    (clicked)="onClickSearch()" ></app-button>
+    </div>
+
+    <div>
+        <router-outlet></router-outlet>
+    </div>
+
+</div>
