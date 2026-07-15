@@ -1,0 +1,61 @@
+<div>
+    <div *ngIf="characterList != []" class="flex items-center justify-center" >
+        <table class="table-fixed w-[75%]" >
+            <thead>
+                <tr>
+                    <th class="p-3
+                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
+                               font-sans text-center font-[20px]" > Immagine </th>
+
+                    <th class="p-3
+                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
+                               font-sans text-center font-[20px]" > Nome </th>
+
+                    <th class="p-3
+                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
+                               font-sans text-center font-[20px]" > Specie </th>
+
+                    <th class="p-3
+                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
+                               font-sans text-center font-[20px]" > Stato </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let character of characterList; index as i;" >
+                    <td class="flex items-center justify-center" >
+                               <img
+                                    class="h-fit w-fit m-1 p-1 rounded-2xl"
+                                    src="{{character.ImmagineURL}}"
+                                    alt="{{character.ImmagineURL}}" ></td>
+
+                    <td class="p-2.5
+                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
+                               font-sans text-center font-[17.5px]" > {{character.Nome}} </td>
+
+                    <td class="p-2.5
+                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
+                               font-sans text-center font-[17.5px]" > {{character.Specie}} </td>
+
+                    <td class="p-2.5
+                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
+                               font-sans text-center font-[17.5px]" > {{character.Stato}} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex items-center justify-between" >
+        <app-button [label]="'Precedente'"
+                    [size]="'medium'"
+                    [type]="'button'"
+                    [variant]="'operations'"
+                    (clicked)="onClickPrev()" ></app-button>
+
+        <app-button [label]="'Successivo'"
+                    [size]="'medium'"
+                    [type]="'button'"
+                    [variant]="'operations'"
+                    (clicked)="onClickNext()" ></app-button>
+    </div>
+</div>
