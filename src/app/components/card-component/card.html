@@ -1,0 +1,58 @@
+<div class="flex flex-row justify-between" >
+    <div class="flex flex-col
+                h-fit w-fit m-5 p-5
+                bg-[#a3e1e0]
+                border-4 rounded-2xl border-solid border-[#97ce4c]" >
+
+        <div class="flex items-center justify-center" >
+            <img class="h-75 w-75 rounded-3xl"
+                 [src]="characterCard.image"
+                 [alt]="characterCard" >
+        </div>
+
+        <div class="flex flex-col items-center justify-center
+                    h-fit w-fit m-5 p-0
+                    bg-[#a3e1e0]
+                    border-2 rounded-3xl border-solid border-[#a3e1e0]" >
+
+            <h1 class="text-[#000000] text-[20px] font-bold"
+                id="Nome" > {{characterCard.name}} </h1>
+
+            <h1 class="text-[#000000] text-[20px] font-bold"
+                id="Genere & Status" > {{characterCard.gender}} - {{characterCard.status}} </h1>
+
+            <h1 class="text-[#000000] text-[20px] font-bold"
+                id="Specie" > {{characterCard.species}} </h1>
+
+            <h1 class="text-[#000000] text-[20px] font-bold"
+                id="Specie" > {{characterCard.origin.name}} - {{characterCard.location.name}} </h1>
+        </div>
+    </div>
+
+    <div>
+        <table class="table-fixed m-5 p-0" >
+            <thead>
+                <tr>
+                    <th class="p-3
+                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
+                               font-sans text-center font-[20px]" > Episodio </th>
+                    <th class="p-3
+                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
+                               font-sans text-center font-[20px]" > Link </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let episodeLink of characterCard.episode; index as i;" >
+                    <td class="p-2.5
+                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
+                               font-sans text-center font-[17.5px]" > {{i + 1}} </td>
+
+                    <td class="p-2.5
+                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
+                               font-sans text-center font-[17.5px]" > {{episodeLink}} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
