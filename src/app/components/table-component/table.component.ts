@@ -1,7 +1,8 @@
 import { NgFor, NgIf } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
+import { Subject, switchMap, takeUntil } from "rxjs";
 import { ButtonComponent } from "../button-component/button.component";
-import { CharacterService } from "../../services/character.service";
+import { HandleClickService } from "../../services/click.service";
 import { CharacterInfo } from "../../models/character";
 
 @Component({
@@ -15,19 +16,35 @@ import { CharacterInfo } from "../../models/character";
     ]
 })
 
-export class TableComponent {
+export class TableComponent implements OnInit, OnDestroy {
 
-    private characterService = inject(CharacterService);
-    public characterList : CharacterInfo[] = [];
+    private handleClickService = inject(HandleClickService);
+    private destroy$ : Subject<void> = new Subject();
+    private onClick$ : Subject<'prev' | 'init' | 'next'> = new Subject<'prev' | 'init' | 'next'>();
+    public characterList = signal<CharacterInfo[]>([]);
 
-    onClickPrev() : void {
-        this.characterList = [];
-        this.characterList = this.characterService.getInfoPrevApi();
+    ngOnInit() : void {
+        this.onClick$
+        .pipe(
+            switchMap((action : 'prev' | 'init' | 'next') => {
+                return this.handleClickService.getInfo$(action);
+            }),
+            takeUntil(this.destroy$)
+        )
+        .subscribe({
+            next : ((info : CharacterInfo[]) => { this.characterList.set(info); })
+        })
+
+        this.onClick$.next('init');
     }
 
-    onClickNext() : void {
-        this.characterList = [];
-        this.characterList = this.characterService.getInfoNextApi();
+    ngOnDestroy() : void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
+
+    onClickPrev() : void { this.onClick$.next('prev'); }
+
+    onClickNext() : void { this.onClick$.next('next'); }
 
 }
