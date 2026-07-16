@@ -1,18 +1,26 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, map, switchMap, tap, toArray } from "rxjs";
+import { BehaviorSubject, map, Observable, switchMap, toArray } from "rxjs";
+import { NumberOfPageService } from "./page.service";
 import { Character, CharacterInfo, CharacterResults } from "../models/character";
 
 @Injectable({providedIn: 'root'})
 export class CharacterService {
 
     private http = inject(HttpClient);
+    private numberOfPageService = inject(NumberOfPageService);
     private api : string = `https://rickandmortyapi.com/api/character`;
     private character$ : BehaviorSubject<CharacterInfo[]> = new BehaviorSubject([{ Nome : "", ImmagineURL : "", Stato : "", Specie : "" }]);
     private infoApi$ : BehaviorSubject<string> = new BehaviorSubject(this.api);
 
-    constructor() {
-        this.http.get<Character>(this.infoApi$.getValue())
+    getCharacterList() : CharacterInfo[] { return this.character$.getValue(); }
+
+    getInfoApiValue() : string { return this.infoApi$.getValue(); }
+
+    getInitInfo$() : Observable<CharacterInfo[]> {
+        let page = this.numberOfPageService.getValue();
+        console.log(`[CharacterService] : Page ${page}`);
+        return this.http.get<Character>(this.api)
         .pipe(
             map((character : Character) => character.results),
             switchMap((results : CharacterResults[]) => results),
@@ -26,82 +34,44 @@ export class CharacterService {
             }),
             toArray()
         )
-        .subscribe({
-            next : ((results : CharacterInfo[]) => {
-                this.character$.next(results);
-                this.infoApi$.next(this.api);
-            }),
-            error : ((err) => { console.log('Error Notified for First http.get(this.api)'); }),
-            complete : (() => {})
-        })
     }
 
-    getCharacterList() : CharacterInfo[] { return this.character$.getValue(); }
-
-    getInfoApiValue() : string { return this.infoApi$.getValue(); }
-
-    getInfoNextApi() : CharacterInfo[] {
-        this.http.get<Character>(this.infoApi$.getValue())
+    getNextInfo$() : Observable<CharacterInfo[]> {
+        let page = this.numberOfPageService.add();
+        console.log(`[CharacterService] : Page ${page}`);
+        return this.http.get<Character>(`${this.api}?page=${page}`)
         .pipe(
-            map((character : Character) => character.info.next),
-            tap((InfoNextApi : string) => this.infoApi$.next(InfoNextApi)),
-            switchMap((InfoNextApi : string) => {
-                return this.http.get<Character>(InfoNextApi)
-                .pipe(
-                    map((character : Character) => character.results),
-                    switchMap((results : CharacterResults[]) => results),
-                    map((results : CharacterResults) => {
-                        return {
-                            Nome : results.name,
-                            ImmagineURL : results.image,
-                            Stato : results.status,
-                            Specie : results.species
-                        }
-                    }),
-                    toArray()
-                )
-            })
-        )
-        .subscribe({
-            next : ((results : CharacterInfo[]) => {
-                this.character$.next(results);
+            map((character : Character) => character.results),
+            switchMap((results : CharacterResults[]) => results),
+            map((results : CharacterResults) => {
+                return {
+                    Nome : results.name,
+                    ImmagineURL : results.image,
+                    Stato : results.status,
+                    Specie : results.species
+                }
             }),
-            error : ((err) => { console.log('Error Notified for http.get() Next'); }),
-            complete : (() => {})
-        })
-        return this.character$.getValue()
+            toArray()
+        )
     }
 
-    getInfoPrevApi() : CharacterInfo[] {
-        this.http.get<Character>(this.infoApi$.getValue())
+    getPrevInfo$() : Observable<CharacterInfo[]> {
+        let page = this.numberOfPageService.sub();
+        console.log(`[CharacterService] : Page ${page}`);
+        return this.http.get<Character>(`${this.api}?page=${page}`)
         .pipe(
-            map((character : Character) => character.info.prev),
-            tap((InfoPrevApi : string) => this.infoApi$.next(InfoPrevApi)),
-            switchMap((InfoPrevApi : string) => {
-                return this.http.get<Character>(InfoPrevApi)
-                .pipe(
-                    map((character : Character) => character.results),
-                    switchMap((results : CharacterResults[]) => results),
-                    map((results : CharacterResults) => {
-                        return {
-                            Nome : results.name,
-                            ImmagineURL : results.image,
-                            Stato : results.status,
-                            Specie : results.species
-                        }
-                    }),
-                    toArray()
-                )
-            })
-        )
-        .subscribe({
-            next : ((results : CharacterInfo[]) => {
-                this.character$.next(results);
+            map((character : Character) => character.results),
+            switchMap((results : CharacterResults[]) => results),
+            map((results : CharacterResults) => {
+                return {
+                    Nome : results.name,
+                    ImmagineURL : results.image,
+                    Stato : results.status,
+                    Specie : results.species
+                }
             }),
-            error : ((err) => { console.log('Error Notified for http.get() Prev'); }),
-            complete : (() => {})
-        })
-        return this.character$.getValue()
+            toArray()
+        )
     }
 
 }
