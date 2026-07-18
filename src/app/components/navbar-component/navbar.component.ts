@@ -8,13 +8,13 @@ import { debounceTime, Subject, takeUntil } from "rxjs";
     `
     <form>
         <input class="flex items-center justify-center
-                    h-12.5 w-187.5 m-6.25 p-2.5
-                    border-solid border-[0.15rem] border-slate-950 rounded-3xl
-                    bg-neutral-50
-                    font-sans text-[15px] text-slate-950"
-            placeholder=" Cerca ... "
-            type="text"
-            [formControl]="search" >
+                      h-12.5 w-187.5 m-6.25 p-2.5
+                      border-solid border-[0.15rem] border-slate-950 rounded-3xl
+                      bg-neutral-100
+                      font-sans text-[15px] text-slate-950"
+               placeholder=" Cerca ... "
+               type="text"
+               [formControl]="search" >
     </form>
     `,
     styles: [],

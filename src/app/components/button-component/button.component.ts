@@ -19,7 +19,7 @@ export class ButtonComponent {
     label : InputSignal<string> = input.required();
     size : InputSignal<'small' | 'medium' | 'large'> = input<'small' | 'medium' | 'large'>('medium');
     type : InputSignal<'button' | 'reset' | 'submit'> = input<'button' | 'reset' | 'submit'>('button');
-    variant : InputSignal<'delete' | 'operations' | 'search'> = input<'delete' | 'operations' | 'search'>('operations');
+    variant : InputSignal<'delete' | 'dropDown' | 'operations' | 'setItem' | 'search'> = input<'delete' | 'dropDown' | 'operations' | 'setItem' | 'search'>('operations');
     clicked : OutputEmitterRef<void> = output<void>();
 
     buttonClasses = computed<string>(() => buttonStyles({
@@ -37,7 +37,7 @@ export class ButtonComponent {
 
 
 export const buttonStyles = cva (
-    'flex items-center justify-center m-6.25 p-2.75 border-solid rounded-2xl cursor-pointer text-white font-normal',
+    'flex items-center justify-center border-solid cursor-pointer border-2',
     {
         variants : {
             size : {
@@ -51,9 +51,11 @@ export const buttonStyles = cva (
                 submit : ''
             },
             variant : {
-                delete : 'bg-red-700 hover:bg-red-800',
-                operations : 'bg-blue-700 hover:bg-blue-800',
-                search : 'bg-green-700 hover:bg-green-800'
+                delete : 'm-6.25 p-2.75 rounded-2xl bg-neutral-100 text-red-500 hover:bg-red-500 hover:text-neutral-50 hover:shadow-[0_0_3px_rgba(239,68,68,0.95),0_6px_16px_rgba(0,0,0,0.7)]',
+                dropDown : 'm-0 p-0 bg-neutral-50 text-slate-950 hover:bg-slate-500 hover:text-neutral-50',
+                operations : 'm-6.25 p-2.75 rounded-2xl bg-neutral-100 text-blue-500 hover:bg-blue-500 hover:text-neutral-50 hover:shadow-[0_0_3px_rgba(59,130,246,0.95),0_6px_16px_rgba(0,0,0,0.7)]',
+                setItem : 'm-0 p-0 bg-neutral-50 text-yellow-500 hover:bg-yellow-500 hover:text-neutral-50',
+                search : 'm-6.25 p-2.75 rounded-2xl bg-neutral-100 text-green-500 hover:bg-green-500 hover:text-neutral-50 hover:shadow-[0_0_3px_rgba(34,197,94,0.95),0_6px_16px_rgba(0,0,0,0.7)]'
             }
         }
     }
