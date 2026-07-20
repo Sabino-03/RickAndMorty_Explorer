@@ -1,56 +1,57 @@
-<div class="flex flex-row justify-between" >
-    <div class="flex flex-col
-                h-fit w-fit m-5 p-5
-                bg-[#a3e1e0]
-                border-4 rounded-2xl border-solid border-[#97ce4c]" >
+<div class="flex items-start justify-between m-5 p-5" >
+    <div id="card" >
+        <div class="flex flex-col items-center justify-center m-5 p-5
+                    border-3 border-solid border-lime-500 rounded-3xl
+                    bg-linear-to-r from-cyan-500 to-cyan-50" >
+            <div class="flex items-center justify-center" >
+                <img class="h-75 w-75 rounded-full"
+                     [src]="image()"
+                     [alt]="image()" >
+            </div>
 
-        <div class="flex items-center justify-center" >
-            <img class="h-75 w-75 rounded-3xl"
-                 [src]="characterCard.image"
-                 [alt]="characterCard" >
-        </div>
+            <div class="flex flex-col items-center justify-center m-5 p-5" >
+                <h1 class="mt-3 text-slate-950 font-bold text-lg"
+                    id="Nome" > {{ name() }} </h1>
 
-        <div class="flex flex-col items-center justify-center
-                    h-fit w-fit m-5 p-0
-                    bg-[#a3e1e0]
-                    border-2 rounded-3xl border-solid border-[#a3e1e0]" >
+                <div class="flex flex-row items-center justify-center mt-1 gap-3" >
+                    <div [class]="'h-3 w-3 rounded-full ' + characterStatus()"
+                         id="Stato" ></div>
+                    
+                    <h1 class="text-slate-950 text-md"
+                        id="Specie" > {{ species() }} </h1>
+                </div>
 
-            <h1 class="text-[#000000] text-[20px] font-bold"
-                id="Nome" > {{characterCard.name}} </h1>
+                <h1 class="text-slate-950 text-md"
+                    id="Origine & Location" > {{ location() }} </h1>
 
-            <h1 class="text-[#000000] text-[20px] font-bold"
-                id="Genere & Status" > {{characterCard.gender}} - {{characterCard.status}} </h1>
-
-            <h1 class="text-[#000000] text-[20px] font-bold"
-                id="Specie" > {{characterCard.species}} </h1>
-
-            <h1 class="text-[#000000] text-[20px] font-bold"
-                id="Specie" > {{characterCard.origin.name}} - {{characterCard.location.name}} </h1>
+                <h1 class="text-slate-950 text-md"
+                    id="Origine & Location" > {{ origin() }} </h1>
+            </div>
         </div>
     </div>
 
-    <div>
-        <table class="table-fixed m-5 p-0" >
+    <div id="table" >
+        <table class="table-fixed m-5 p-5" >
             <thead>
                 <tr>
-                    <th class="p-3
-                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
-                               font-sans text-center font-[20px]" > Episodio </th>
-                    <th class="p-3
-                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
-                               font-sans text-center font-[20px]" > Link </th>
+                    <th class="p-3 rounded-tl-3xl
+                               border-b-3 border-solid border-lime-500 bg-blue-500 
+                               font-['Bangers'] text-center" > Episodio </th>
+                    <th class="p-3 rounded-tl-3xl
+                               border-b-3 border-solid border-lime-500 bg-blue-500 
+                               font-['Bangers'] text-center" > Link </th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr *ngFor="let episodeLink of characterCard.episode; index as i;" >
+                <tr *ngFor="let episode of episodes(); index as i;" >
                     <td class="p-2.5
-                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
-                               font-sans text-center font-[17.5px]" > {{i + 1}} </td>
+                               border-3 border-solid border-lime-500 bg-linear-to-r from-cyan-500 to-cyan-50
+                               font-['Nunito'] text-center" > {{i + 1}} </td>
 
                     <td class="p-2.5
-                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
-                               font-sans text-center font-[17.5px]" > {{episodeLink}} </td>
+                               border-3 border-solid border-lime-500 bg-linear-to-r from-cyan-50 to-cyan-500
+                               font-['Nunito'] text-center" > {{ episode }} </td>
                 </tr>
             </tbody>
         </table>
