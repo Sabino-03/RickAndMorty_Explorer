@@ -1,28 +1,32 @@
 <div>
-    <div *ngIf="characterList != []" class="flex items-center justify-center" >
-        <table class="table-fixed w-[75%]" >
+    <div *ngIf="characterList" class="flex items-center justify-center" >
+        <table class="table-fixed w-[75%] m-6.25 p-0" >
             <thead>
                 <tr>
-                    <th class="p-3
-                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
-                               font-sans text-center font-[20px]" > Immagine </th>
+                    <th class="p-3 rounded-tl-3xl
+                               border-b-3 border-solid border-lime-500 bg-blue-500
+                               font-['Bangers'] text-center" > Immagine </th>
 
                     <th class="p-3
-                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
-                               font-sans text-center font-[20px]" > Nome </th>
+                               border-l-3 border-b-3 border-solid border-lime-500 bg-blue-500
+                               font-['Bangers'] text-center" > Nome </th>
 
                     <th class="p-3
-                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
-                               font-sans text-center font-[20px]" > Specie </th>
+                               border-x-3 border-b-3 border-solid border-lime-500 bg-blue-500
+                               font-['Bangers'] text-center" > Specie </th>
 
                     <th class="p-3
-                               border-2 border-solid border-[#97ce4c] bg-[#02afc5]
-                               font-sans text-center font-[20px]" > Stato </th>
+                               border-r-3 border-b-3 border-solid border-lime-500 bg-blue-500
+                               font-['Bangers'] text-center" > Stato </th>
+
+                    <th class="p-3 rounded-tr-3xl
+                               border-b-3 border-solid border-lime-500 bg-blue-500
+                               font-['Bangers'] text-center" > Salva Nei Preferiti </th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr *ngFor="let character of characterList; index as i;" >
+                <tr *ngFor="let character of characterList(); index as i;" >
                     <td class="flex items-center justify-center" >
                                <img
                                     class="h-fit w-fit m-1 p-1 rounded-2xl"
@@ -30,16 +34,20 @@
                                     alt="{{character.ImmagineURL}}" ></td>
 
                     <td class="p-2.5
-                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
-                               font-sans text-center font-[17.5px]" > {{character.Nome}} </td>
+                               border-3 border-solid border-lime-500 bg-linear-to-r from-cyan-500 to-cyan-50
+                               font-['Nunito'] text-center" > {{character.Nome}} </td>
 
                     <td class="p-2.5
-                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
-                               font-sans text-center font-[17.5px]" > {{character.Specie}} </td>
+                               border-3 border-solid border-lime-500 bg-linear-to-r from-cyan-50 to-cyan-500
+                               font-['Nunito'] text-center" > {{character.Specie}} </td>
 
                     <td class="p-2.5
-                               border-2 border-solid border-[#97ce4c] bg-[#a3e1e0]
-                               font-sans text-center font-[17.5px]" > {{character.Stato}} </td>
+                               border-3 border-solid border-lime-500 bg-linear-to-r from-cyan-500 to-cyan-50
+                               font-['Nunito'] text-center" > {{character.Stato}} </td>
+
+                    <td class="text-center" >
+                        <button class="hover:cursor-pointer hover:zoom-150"
+                                (click)="onClickSetFavourite(character)" > ⭐ </button></td>
                 </tr>
             </tbody>
         </table>

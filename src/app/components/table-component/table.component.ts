@@ -3,6 +3,7 @@ import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import { Subject, switchMap, takeUntil } from "rxjs";
 import { ButtonComponent } from "../button-component/button.component";
 import { HandleClickService } from "../../services/click.service";
+import { FavouriteService } from "../../services/favourite.service";
 import { CharacterInfo } from "../../models/character";
 
 @Component({
@@ -18,6 +19,7 @@ import { CharacterInfo } from "../../models/character";
 
 export class TableComponent implements OnInit, OnDestroy {
 
+    private favouriteService = inject(FavouriteService);
     private handleClickService = inject(HandleClickService);
     private destroy$ : Subject<void> = new Subject();
     private onClick$ : Subject<'prev' | 'init' | 'next'> = new Subject<'prev' | 'init' | 'next'>();
@@ -27,7 +29,7 @@ export class TableComponent implements OnInit, OnDestroy {
         this.onClick$
         .pipe(
             switchMap((action : 'prev' | 'init' | 'next') => {
-                return this.handleClickService.getInfo$(action);
+                return this.handleClickService.getInfo$(action)
             }),
             takeUntil(this.destroy$)
         )
@@ -42,6 +44,8 @@ export class TableComponent implements OnInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
     }
+
+    onClickSetFavourite(character : CharacterInfo) : void { this.favouriteService.setFavouriteCharacter(character); }
 
     onClickPrev() : void { this.onClick$.next('prev'); }
 
