@@ -55,7 +55,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     onSubmit() : void {
-        const authentication = this.authService.isAuthenticated(this.username$.getValue(), this.password$.getValue());
+        this.authService.isAuthenticated(this.username$.getValue(), this.password$.getValue());
+        const authentication = this.authService.getToken();
         authentication ? this.router.navigate(['explore']) : false
     }
 
