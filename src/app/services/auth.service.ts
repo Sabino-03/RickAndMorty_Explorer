@@ -1,28 +1,46 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, filter, map, of, Subject, takeUntil } from "rxjs";
+import { isPlatformBrowser } from "@angular/common";
+import { inject, Injectable, PLATFORM_ID } from "@angular/core";
+import { filter, map, of } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
-    destroy$ : Subject<void> = new Subject();
-    isLoggedIn$ : BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private platformId = inject(PLATFORM_ID);
+    private isBrowser = isPlatformBrowser(this.platformId);
+    private tokenLocalStorage : string | null = this.isBrowser ? localStorage.getItem('token') : null ;
+    private token : boolean = false;
 
-    isAuthenticated(userName : string, passWord : string) : boolean {
+    constructor() {
+        switch (this.tokenLocalStorage) {
+            case 'true' : this.token = true;
+                break;
+            case 'false' : this.token = false;
+                break;
+            default : this.token = false;
+        }
+    }
+
+    getToken() : boolean { return this.token; }
+
+    isAuthenticated(userName : string, passWord : string) : void {
         of({userName, passWord})
         .pipe(
             filter((user : {userName : string, passWord : string}) => user.userName.length>0 && user.passWord.length>0),
             map((user : {userName : string, passWord : string}) => true),
-            takeUntil(this.destroy$)
         )
         .subscribe({
-            next : ((auth : boolean) => {
-                this.isLoggedIn$.next(auth);
-                this.destroy$.next();
-            }),
+            next : ((auth : boolean) => { this.token = auth; }),
             error : ((err) => {}),
-            complete : (() => { this.destroy$.complete(); })
+            complete : (() => {})
         })
-        return this.isLoggedIn$.getValue()
+
+        if(this.isBrowser)
+            localStorage.setItem("token", `${this.token}`);
+    }
+
+    logOut() : void {
+        this.token = false;
+        localStorage.removeItem("token");
     }
 
 }
