@@ -1,7 +1,13 @@
-import { Component, inject, OnInit, output, OutputEmitterRef } from "@angular/core";
+import { Component, inject } from "@angular/core";
+import { Router, RouterModule } from "@angular/router";
+import { of, switchMap, tap } from "rxjs";
 import { ButtonComponent } from "../button-component/button.component";
+import { FilterComponent } from "../filter-component/filter.component";
 import { NavbarComponent } from "../navbar-component/navbar.component";
-import { CharacterService } from "../../services/character.service";
+import { AuthService } from "../../services/auth.service";
+import { FilterService } from "../../services/filter.service";
+import { SearchService } from "../../services/search.service";
+import { CharacterResults } from "../../models/character";
 
 @Component({
     selector: 'app-dashboard',
@@ -9,22 +15,52 @@ import { CharacterService } from "../../services/character.service";
     styles: [],
     imports: [
         ButtonComponent,
-        NavbarComponent
+        FilterComponent,
+        NavbarComponent,
+        RouterModule
     ]
 })
 
-export class DashBoardComponent implements OnInit {
+export class DashBoardComponent {
 
-    private characterService = inject(CharacterService);
-    private searched : string = "";
+    private router = inject(Router);
+    private authService = inject(AuthService);
+    private filterService = inject(FilterService);
+    private searchService = inject(SearchService);
+    private characterExists : boolean = false;
+    private characterSearched : string = "";
 
-    Name : OutputEmitterRef<string> = output<string>();
-    ImageURL : OutputEmitterRef<string> = output<string>();
-    Status : OutputEmitterRef<string> = output<string>();
-    Species : OutputEmitterRef<string> = output<string>();
+    getSearchTerm($event : string) : string { return this.characterSearched = $event; }
 
-    ngOnInit() : void { this.characterService.getCharacterList(); }
+    onClickLogOut() : void {
+        this.authService.logOut();
+        this.router.navigate(['']);
+    }
 
-    getSearchTerm($event : string) : string { return this.searched = $event }
+    onClickSearch() : void {
+        let selectedFilter = this.filterService.getFilter();
+        if(selectedFilter === "")
+            this.filterService.requestFilter();
+
+        of(this.characterSearched)
+        .pipe(
+            tap((characterSearched : string) => characterSearched),
+            switchMap((characterSearched : string) => {
+                return this.searchService.toSearchNameStatus(characterSearched, selectedFilter)
+            })
+        )
+        .subscribe({
+            next : ((results : CharacterResults) => {
+                this.characterExists = true;
+                this.characterExists ? this.router.navigate(['explore/:id']) : false
+
+                this.searchService.setCharacterId(results.id);
+                localStorage.setItem(`Character Searched`, `${results.id}`);
+                this.searchService.setCharacterSearched(results);
+            }),
+            error : ((err) => { this.characterExists = false; }),
+            complete : (() => { console.log(`Character Found`); })
+        })
+    }
 
 }
