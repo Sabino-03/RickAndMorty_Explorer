@@ -1,6 +1,7 @@
 import { NgFor } from "@angular/common";
-import { Component, computed, inject, OnDestroy, OnInit, signal } from "@angular/core";
+import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import { Observable, of, Subject, switchMap, takeUntil, tap } from "rxjs";
+import { SingleCardComponent } from "../single-card-component/single.card.component";
 import { SearchService } from "../../services/search.service";
 import { CharacterResults } from "../../models/character";
 
@@ -8,7 +9,10 @@ import { CharacterResults } from "../../models/character";
     selector: 'app-card',
     templateUrl: './card.html',
     styles: [],
-    imports: [ NgFor ]
+    imports: [
+        NgFor,
+        SingleCardComponent
+    ]
 })
 
 export class CardComponent implements OnInit, OnDestroy {
@@ -27,10 +31,6 @@ export class CardComponent implements OnInit, OnDestroy {
     public location = signal<string>("unknown");
     public image = signal<string>("https://rickandmortyapi.com/api/character/avatar/19.jpeg");
     public episodes = signal<(string | null)[]>([]);
-
-    characterStatus = computed(() => {
-        return this.status() === "Alive" ? 'bg-green-500' : this.status() === "Dead" ? 'bg-red-500' : 'bg-gray-500'
-    })
 
     ngOnInit() : void {
         this.onRefresh$
