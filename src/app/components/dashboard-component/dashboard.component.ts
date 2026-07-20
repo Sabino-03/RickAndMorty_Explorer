@@ -63,4 +63,8 @@ export class DashBoardComponent {
         })
     }
 
+    onClickShowFavourites() : void {
+        this.router.navigate(['favourite']);
+    }
+
 }

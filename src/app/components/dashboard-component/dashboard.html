@@ -7,6 +7,14 @@
                     (clicked)="onClickLogOut()" ></app-button>
     </div>
 
+    <div class="flex items-end justify-end" >
+        <app-button [label]="'Visualizza Preferiti'"
+                    [size]="'medium'"
+                    [type]="'button'"
+                    [variant]="'operations'"
+                    (clicked)="onClickShowFavourites()" ></app-button>
+    </div>
+
     <div class="flex items-start justify-center" >
         <app-navbar (searched)="getSearchTerm($event)" ></app-navbar>
 
