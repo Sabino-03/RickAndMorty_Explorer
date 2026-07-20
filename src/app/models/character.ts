@@ -11,24 +11,24 @@ export interface Character {
 
 
 export interface CharacterResults {
-    id : number,
-    name : string,
-    status : string,
-    species : string,
-    type : string,
-    gender : string,
+    id : number | null,
+    name : string | null,
+    status : string | null,
+    species : string | null,
+    type : string | null,
+    gender : string | null,
     origin : {
-        name : string,
-        url : string
+        name : string | null,
+        url : string | null,
     },
     location : {
-        name : string,
-        url : string,
+        name : string | null,
+        url : string | null
     },
-    image : string,
-    episode : string[],
-    url : string,
-    created : string
+    image : string | null,
+    episode : (string | null)[],
+    url : string | null,
+    created : string | null
 }
 
 
