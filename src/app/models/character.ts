@@ -19,7 +19,7 @@ export interface CharacterResults {
     gender : string | null,
     origin : {
         name : string | null,
-        url : string | null,
+        url : string | null
     },
     location : {
         name : string | null,
@@ -34,8 +34,8 @@ export interface CharacterResults {
 
 
 export interface CharacterInfo {
-    Nome : string,
-    ImmagineURL : string,
-    Stato : string,
-    Specie : string
+    Nome : string | null,
+    ImmagineURL : string | null,
+    Stato : string | null,
+    Specie : string | null
 }
