@@ -1,0 +1,17 @@
+<div>
+    <div *ngIf="favouriteList()" class="flex items-center justify-center" >
+        <table class="table-fixed m-6.25 p-0" >
+            <tbody>
+                <tr *ngFor="let favourite of favouriteList(); index as i;" >
+                    <td> <app-single-card
+                                            [name]="favourite.name"
+                                            [status]="favourite.status"
+                                            [species]="favourite.species"
+                                            [origin]="favourite.origin.name"
+                                            [location]="favourite.location.name"
+                                            [image]="favourite.image" ></app-single-card> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
