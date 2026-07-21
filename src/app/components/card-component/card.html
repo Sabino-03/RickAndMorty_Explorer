@@ -1,4 +1,4 @@
-<div class="flex items-start justify-between m-5 p-5" >
+<div class="flex flex-col md:flex-row items-start justify-between m-5 p-5 gap-3" >
     <div id="card" >
         <app-single-card
                         [name]="name()"
@@ -9,8 +9,8 @@
                         [image]="image()" ></app-single-card>
     </div>
 
-    <div id="table" >
-        <table class="table-fixed m-5 p-5" >
+    <div id="table" class="max-w-full overflow-x-auto" >
+        <table class="table-fixed w-full max-w-4xl m-5 p-5" >
             <thead>
                 <tr>
                     <th class="p-3 rounded-tl-3xl

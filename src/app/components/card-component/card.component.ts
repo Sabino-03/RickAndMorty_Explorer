@@ -4,6 +4,7 @@ import { Observable, of, Subject, switchMap, takeUntil, tap } from "rxjs";
 import { SingleCardComponent } from "../single-card-component/single.card.component";
 import { SearchService } from "../../services/search.service";
 import { CharacterResults } from "../../models/character";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: 'app-card',
@@ -17,13 +18,14 @@ import { CharacterResults } from "../../models/character";
 
 export class CardComponent implements OnInit, OnDestroy {
 
+    private activatedRoute = inject(ActivatedRoute);
     private searchService = inject(SearchService);
     private destroy$ : Subject<void> = new Subject();
     private onRefresh$ : Subject<void> = new Subject();
     public characterCard : CharacterResults = {
         id:0, name:"", status:"", species:"", type:"", gender:"", origin:{name:"", url:""}, location:{name:"", url:""}, image:"", episode:[""], url:"", created:""
     };
-    private characterId : number = Number(localStorage.getItem("Character Searched"));
+    private characterId : number = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     public name = signal<string>("Not Found");
     public status = signal<string>("unknown");
     public species = signal<string>("unknown");
