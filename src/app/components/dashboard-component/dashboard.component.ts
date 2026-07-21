@@ -28,6 +28,7 @@ export class DashBoardComponent {
     private filterService = inject(FilterService);
     private searchService = inject(SearchService);
     private characterExists : boolean = false;
+    public characterId : string | undefined = '';
     private characterSearched : string = "";
 
     getSearchTerm($event : string) : string { return this.characterSearched = $event; }
@@ -52,7 +53,7 @@ export class DashBoardComponent {
         .subscribe({
             next : ((results : CharacterResults) => {
                 this.characterExists = true;
-                this.characterExists ? this.router.navigate(['explore/:id']) : false
+                this.characterExists ? this.router.navigate([`explore/${results.id}`]) : false
 
                 this.searchService.setCharacterId(results.id);
                 localStorage.setItem(`Character Searched`, `${results.id}`);
