@@ -1,13 +1,10 @@
-import { isPlatformBrowser } from "@angular/common";
-import { inject, Injectable, PLATFORM_ID } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { filter, map, of } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
-    private platformId = inject(PLATFORM_ID);
-    private isBrowser = isPlatformBrowser(this.platformId);
-    private tokenLocalStorage : string | null = this.isBrowser ? localStorage.getItem('token') : null ;
+    private tokenLocalStorage : string | null = localStorage.getItem('token');
     private token : boolean = false;
 
     constructor() {
@@ -34,8 +31,7 @@ export class AuthService {
             complete : (() => {})
         })
 
-        if(this.isBrowser)
-            localStorage.setItem("token", `${this.token}`);
+        localStorage.setItem("token", `${this.token}`);
     }
 
     logOut() : void {
