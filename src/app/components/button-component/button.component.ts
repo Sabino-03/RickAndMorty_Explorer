@@ -1,4 +1,5 @@
-import { Component, computed, input, InputSignal, output, OutputEmitterRef } from "@angular/core";
+import { Component, computed, inject, input, InputSignal, output, OutputEmitterRef } from "@angular/core";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { cva } from "class-variance-authority";
 
 @Component({
@@ -8,18 +9,22 @@ import { cva } from "class-variance-authority";
     <div>
         <button [class]="buttonClasses()"
                 [type]="type()"
+                [routerLink]="router()"
                 (click)="onClick()" > {{ label() }} </button>
     </div>
     `,
-    styles: []
+    styles: [],
+    imports: [ RouterLink ]
 })
 
 export class ButtonComponent {
 
+    private activatedRoute = inject(ActivatedRoute);
     label : InputSignal<string> = input.required();
     size : InputSignal<'small' | 'medium' | 'large'> = input<'small' | 'medium' | 'large'>('medium');
     type : InputSignal<'button' | 'reset' | 'submit'> = input<'button' | 'reset' | 'submit'>('button');
     variant : InputSignal<'delete' | 'dropDown' | 'operations' | 'setItem' | 'search'> = input<'delete' | 'dropDown' | 'operations' | 'setItem' | 'search'>('operations');
+    router : InputSignal<string> = input.required();
     clicked : OutputEmitterRef<void> = output<void>();
 
     buttonClasses = computed<string>(() => buttonStyles({
